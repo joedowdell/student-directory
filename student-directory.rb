@@ -26,8 +26,8 @@ end
 # This is the method to print cohort infomation to the screen
 def print_students(students)
 	puts "This is a list of all students in the Makers Academy database"
-	students.each_with_index do |student, index|
-		puts "\t#{index+1}. #{student[:name]}, #{student[:cohort]}, #{student[:nationality]}"
+	students.each.with_index(1) do |student, index|
+		puts "\t#{index}. #{student[:name]}, #{student[:cohort]}, #{student[:nationality]}"
 	end
 	
 end
