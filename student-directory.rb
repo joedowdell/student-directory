@@ -17,11 +17,26 @@ def student_input(students)
 			nationality = gets.chomp
 
 			students << { name: name, cohort: cohort, nationality: nationality}
+
+			student_tally(students)
+
 			puts "Please enter name of next student and press RETURN to continue, or press RETURN to exit"
 			name = gets.chomp
 		end
 		students
 end
+
+# This method is to taly the number of students
+def student_tally(students)
+	
+	if students.length == 1
+		puts "There is #{students.length} student in the database"
+	else
+		puts "There are #{students.length} students in the database"
+	end
+	
+end
+
 
 # This is the method to print cohort infomation to the screen
 def print_students(students)
@@ -38,6 +53,9 @@ end
 
 student_input(students)
 print_students(students)
-puts students
+student_tally(students)
+
+# puts students
+
 
 
