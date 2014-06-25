@@ -15,7 +15,7 @@ def student_input(students)
 				end 
 			puts "Please enter student's nationality"
 			nationality = gets.chomp
-				
+
 			students << { name: name, cohort: cohort, nationality: nationality}
 			puts "Please enter name of next student and press RETURN to continue, or press RETURN to exit"
 			name = gets.chomp
@@ -25,9 +25,13 @@ end
 
 # This is the method to print cohort infomation to the screen
 def print_students(students)
+	if students.empty? 
+		puts "There are no students in the database!"
+	else
 	puts "This is a list of all students in the Makers Academy database"
-	students.each.with_index(1) do |student, index|
-		puts "\t#{index}. #{student[:name]}, #{student[:cohort]}, #{student[:nationality]}"
+		students.each.with_index(1) do |student, index|
+			puts "\t#{index}. #{student[:name]}, #{student[:cohort]}, #{student[:nationality]}"
+		end	
 	end
 	
 end
