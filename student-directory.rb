@@ -1,10 +1,11 @@
 # This is the method for the interactive menu
+@students = []
+@filename = "students.csv"
 
 def interactive_menu
-	@students = []
 	loop do
 		print_menu
-		process(gets.chomp)
+		process(STDIN.gets.chomp)
 	end
 end
 
@@ -12,8 +13,8 @@ end
 def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
-	puts "3. Save the list to students.csv"
-	puts "4. Load the list from students.csv"
+	puts "3. Save the list to #{@filename}"
+	puts "4. Load the list from #{@filename}"
 	puts "9. Exit"
 end
 
@@ -46,22 +47,22 @@ end
 def student_input
 	puts "Please enter the name of the first student and press RETURN"
 	puts "or press RETURN to exit"
-	name = gets.chomp.capitalize
+	name = STDIN.gets.chomp.capitalize
 		while !name.empty?
 			puts "Please enter the cohort month"
-			cohort = gets.chomp.capitalize.to_sym
+			cohort = STDIN.gets.chomp.capitalize.to_sym
 				if cohort.empty?
 						cohort = :June
 				end 
 			puts "Please enter student's nationality"
-			nationality = gets.chomp
+			nationality = STDIN.gets.chomp
 
-			@students << { name: name, cohort: cohort, nationality: nationality}
+			add_student(name,cohort,nationality)
 
 			student_tally
 
 			puts "Please enter name of next student and press RETURN to continue, or press RETURN to exit"
-			name = gets.chomp.capitalize
+			name = STDIN.gets.chomp.capitalize
 		end
 		@students
 end
@@ -98,23 +99,43 @@ end
 # This is a method to save studetns into a csv
 def save_students
 	#open the file for writing
-	file = File.open("students.csv", "w")
+	file = File.open(filename = "students.csv" , "w")
 	#iterate over the array of students
 	@students.each do |student|
-		student_data = [student[:name], student[:cohort]]
+		student_data = [student[:name], student[:cohort], student[:nationality]]
 		csv_line = student_data.join(",")
 		file.puts csv_line
 	end
 	file.close
+	puts "#{filename} is now saved"
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def load_students(file_name = "students.csv")
+	@filename = file_name
+	file = File.open(file_name, "r")
 	file.readlines.each do |line|
-		name, cohort = line.chomp.split(',')
-			@students << {:name => name, :cohort => cohort.to_sym}
+		name, cohort, nationality = line.chomp.split(',')
+		add_student(name, cohort, nationality)
 	end
 	file.close
+	puts "#{file_name} is now loaded"
+end
+
+def add_student(name, cohort, nationality)
+	@students << {:name => name, :cohort => cohort.to_sym, :nationality => nationality}
+end
+
+def try_load_students
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+			puts "Loaded #{@students.length} from #{filename}"
+	else
+		puts "Sorry, #{filename} doesn't exist."
+		exit
+	end
+	
 end
 
 # This is a method to remove anyone from a cohort that is after than June
@@ -127,6 +148,10 @@ def remove_false_students(students)
 end
 =end
 
+
+#load_students
+load_students
+try_load_students
 interactive_menu
 
 #student_input(students)
