@@ -101,7 +101,6 @@ def save_students
 		student_data = [student[:name], student[:cohort]]
 		csv_line = student_data.join(",")
 		file.puts csv_line
-		file.puts "Testing testing 1, 2, 3!"
 	end
 	file.close
 end
