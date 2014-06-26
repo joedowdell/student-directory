@@ -12,6 +12,7 @@ end
 def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
+	puts "3. Save the list to students.csv"
 	puts "9. Exit"
 end
 
@@ -29,6 +30,8 @@ def process(selection)
 			student_input
 		when "2"
 			show_students
+		when "3"
+			save_students
 		when "9"
 			exit #terminate the program
 		else 
@@ -87,6 +90,20 @@ end
 def sort_cohort
 	@students.sort_by! { |student| [student[:cohort], student[:name], student[:nationality]] }
 	remove_false_students(@students)
+end
+
+# This is a method to save studetns into a csv
+def save_students
+	#open the file for writing
+	file = File.open("students.csv", "w")
+	#iterate over the array of students
+	@students.each do |student|
+		student_data = [student[:name], student[:cohort]]
+		csv_line = student_data.join(",")
+		file.puts csv_line
+		file.puts "Testing testing 1, 2, 3!"
+	end
+	file.close
 end
 
 # This is a method to remove anyone from a cohort that is after than June
